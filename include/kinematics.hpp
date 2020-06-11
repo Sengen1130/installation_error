@@ -6,10 +6,10 @@
 class Kinematics
 {
 public:
-    double winchPos1[3] = {0, 0, 0};     //winch1の設置位置
-    double winchPos2[3] = {25.0, 0, 0};   //winch2の設置位置
-    double winchPos3[3] = {25.0, 15.0, 0}; //winch3の設置位置
-    double winchPos4[3] = {0, 15.0, 0}; //winch4の設置位置
+    double winchPos1[3] = {0, 0, 0};       //winch1の設置位置
+    double winchPos2[3] = {15.0, 0, 0};    //winch2の設置位置
+    double winchPos3[3] = {15.0, 25.0, 0}; //winch3の設置位置
+    double winchPos4[3] = {0, 25.0, 0};    //winch4の設置位置
     double wireLen;
     double x_p;
 
@@ -19,9 +19,9 @@ public:
     //変数について
     //w1:winch1のワイヤ長さ, w2:winch2のワイヤ長さ, w3:winch3のワイヤ長さ
     //winchPos1:winch1の位置, winchPos2:winch2の位置, winchPos3:winch3の位置
-    double foward_kinematics(double w1, double w2)
+    double foward_kinematics(double w1, double w2, double X_2)
     {
-        x_p = (pow(w1, 2) - pow(w2, 2) + pow(winchPos2[0], 2)) / (2 * winchPos2[0]);
+        x_p = (pow(w1, 2) - pow(w2, 2) + pow(X_2, 2)) / (2 * X_2);
         return x_p;
     }
 
