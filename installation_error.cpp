@@ -17,10 +17,12 @@ int main()
         std::cout << "ファイルをオープンできませんでした" << std::endl;
     }
 
+    error.phi = atan(1.5 / error.Fs_y) * PI / 180;
+
     for (error.x = 1; error.x < 15; error.x++)
     {
-        error.l_1 = sqrt(1 + pow(error.x, 2));
-        error.l_2 = sqrt(1 + pow((15 - error.x), 2));
+        error.l_1 = sqrt(1.5 - error.lf + pow(error.x, 2));
+        error.l_2 = sqrt(1.5 - error.lf + pow((15 - error.x), 2));
 
         error.X_2 = rotation.clockwise_rotation_matrix_x((rotation.winchPos2[0] + rotation.delta_x), (rotation.winchPos2[1] + rotation.delta_y));
         error.Y_2 = rotation.clockwise_rotation_matrix_y((rotation.winchPos2[0] + rotation.delta_x), (rotation.winchPos2[1] + rotation.delta_y));
@@ -30,18 +32,22 @@ int main()
 
         error.x_p = rotation.counter_clockwise_rotation_matrix_x(error.X_p, error.Y_p);
         error.y_p = rotation.counter_clockwise_rotation_matrix_y(error.X_p, error.Y_p);
+        error.z_p = error.lf;
 
         error.des_x_p = error.x;
         error.des_y_p = 0;
+        error.des_z_p = error.lf;
 
         error.finDes_x_p = error.x;
-        error.finDes_y_p = 25.0;
+        error.finDes_y_p = 25.0 - error.lf * cos(error.phi);
+        error.finDes_z_p = error.lf * sin(error.phi);
 
-        error.fin_x_p = rotation.counter_clockwise_rotation_matrix_x(error.x_p, error.finDes_y_p);
-        error.fin_y_p = rotation.counter_clockwise_rotation_matrix_y(error.x_p, error.finDes_y_p);
+        error.fin_x_p = rotation.counter_clockwise_rotation_matrix_x(error.finDes_x_p, error.finDes_y_p);
+        error.fin_y_p = rotation.counter_clockwise_rotation_matrix_y(error.finDes_x_p, error.finDes_y_p);
+        error.fin_z_p = error.finDes_z_p;
 
-        fout << error.x_p << " " << error.y_p << " " << error.des_x_p << " " << error.des_y_p << std::endl;
-        fout << error.fin_x_p << " " << error.fin_y_p << " " << error.finDes_x_p << " " << error.finDes_y_p << std::endl;
+        fout << error.x_p << " " << error.y_p << " " << error.z_p << " " << error.des_x_p << " " << error.des_y_p << " " << error.des_z_p << std::endl;
+        fout << error.fin_x_p << " " << error.fin_y_p << " " << error.fin_z_p << " " << error.finDes_x_p << " " << error.finDes_y_p << " " << error.finDes_z_p << std::endl;
     }
 
     return 0;
